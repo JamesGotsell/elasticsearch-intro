@@ -21,3 +21,26 @@ We'll be using the Simpsons [dataset](https://www.kaggle.com/wcukierski/the-simp
 ## Aye Carumba!
 Sometimes I make mistakes. **DOH!**
 If you are having problems with the code from one of the demos, check this repo first. Sometimes in my haste to cut out awkward silence, mis-pronunciations, or a slew of f-bombs I cut out something relevant to the course. I test all of the code before pushing it to the repo so odds are, even if it is not shown in the demo, if it's required for the demo to work it will be in the repo. If that isn't true, or you still have issues- don't hesitate to contact me for help. Use the discussion boards in the course, or shout out on [twitter](https://twitter.com/wfbutton).
+
+notes 
+correct command to insert data 
+
+curl -XPUT -H'Content-type: application/json' -d '{"title": "Add data to elasticsearch", "summary": "Learn to index into es", "views":"10000"}' localhost:9200/egghead/lessons/3
+
+can use op_type=create on end of curl to check if dulpicate and return 409 status
+
+returns this 
+
+"error":{"root_cause":[{"type":"version_conflict_engine_exception","reason":"[lessons][1]: version conflict, document already exists (current version [1])","index_uuid":"XTsFXKpdQziaVfMJC7b8kA","shard":"3","index":"egghead"}],"type":"version_conflict_engine_exception","reason":"[lessons][1]: version conflict, document already exists (current version [1])","index_uuid":"XTsFXKpdQziaVfMJC7b8kA","shard":"3","index":"egghead"},"status":409}
+
+best to use /_create endpoint 
+
+curl -XPUT -H'Content-type: application/json' -d '{"title": "boom", "summary": "ting", "v000"}' localhost:9200/egghead/lessons/4/_create
+
+will return 409 or 200 
+
+use the update endpoint to update a specfic doc
+
+example - adds new data to existinig doc
+
+curl -XPOST -H'Content-type: application/json' -d '{"doc": {"views":"10001", "tags": ["elasticsearch"] }}' localhost:9200/egghead/lessons/3/_update
